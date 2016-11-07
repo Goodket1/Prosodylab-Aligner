@@ -1,5 +1,5 @@
 # Prosodylab-Aligner, v. 1.1
-
+# this comment for my first push 
 Scripts for alignment of laboratory speech production data
 
 * Kyle Gorman <gormanky@ohsu.edu>
@@ -13,7 +13,7 @@ Scripts for alignment of laboratory speech production data
 
 ## License
 
-See included "LICENSE" 
+See included "LICENSE"
 
 ## Citation
 
@@ -26,7 +26,7 @@ Gorman, Kyle, Jonathan Howell and Michael Wagner. 2011. Prosodylab-Aligner: A To
     USAGE: python3 -m aligner [OPTIONS]
 
     Option              Function
-    
+
     -c config_file      Specify a configuration file to use     [default: en.yaml]
 
     -d dictionary       Specify a dictionary file               
@@ -48,7 +48,7 @@ Gorman, Kyle, Jonathan Howell and Michael Wagner. 2011. Prosodylab-Aligner: A To
 
     -r                  Read in serialized acoustic model
 
-    -t training_data/   Perform model training 
+    -t training_data/   Perform model training
 
     Output Group:       Only one of the following arguments may be selected
 
@@ -159,7 +159,7 @@ Prosodylab-Aligner lives on GitHub, a repository for open-source software. You m
 
 Finally, you need to install a few additional dependencies for Python. Enter the following commands to take care of this:
 
-    $ cd Prosodylab-Aligner 
+    $ cd Prosodylab-Aligner
     $ pip3 install -r requirements.txt
 
 At this point, you can test your installation by running:
@@ -191,10 +191,10 @@ Imagine you simply want to align multiple audio files with their associated labe
 
 If you'd like to align multiple .wav/.lab file pairs, and they're all in a single directory `data/`, aligning them is as simple as:
 
-    $ python3 -m aligner -r lang-mod.zip -a data/ -d lang.dict 
+    $ python3 -m aligner -r lang-mod.zip -a data/ -d lang.dict
     ...
 
-This will compute the best alignments, and then place the Praat TextGrids in the `data/` directory. 
+This will compute the best alignments, and then place the Praat TextGrids in the `data/` directory.
 
 The `-r` flag indicates the source of the acoustic model and settings to be used. In the example, `lang-mod.zip` represents the zip directory containing the acoustic model to be used.
 
@@ -208,7 +208,7 @@ The `-r` flag indicates the source of the acoustic model and settings to be used
 
 Secondly, a word in your .lab files may be missing from the dictionary. Such words are written to `OOV.txt`. You can transcribe these using a text editor, then mix them back in like so:
 
-    $ ./sort.py lang.dict OOV.txt > tmp; 
+    $ ./sort.py lang.dict OOV.txt > tmp;
     $ mv tmp lang.dict
 
 If you are transcribing new words using the CMU phone set, see [this page](http://cslu.ohsu.edu/~gormanky/papers/codes/) for IPA equivalents.
@@ -221,28 +221,28 @@ Sometimes there are processing errors that occur. These can often be fixed by en
     $ export CPPFLAGS=-UPHNALG
     $ ./configure --disable-hlmtools --disable-hslab
     $ make -j4
-    $ sudo make -j4 install 
-    
+    $ sudo make -j4 install
+
 Provide your password, if necessary.
 
 ### Training your own models
 
-The aligner module also allows you to train your own models, 
+The aligner module also allows you to train your own models,
 
     $ python3 -m aligner -c lang.yaml -d lang.dict -e 10 -t lang/ -w lang-mod.zip
     ...
 
-Please note: THIS REQUIRES A LOT OF DATA to work well, and further takes a long time when there is a lot of data. 
+Please note: THIS REQUIRES A LOT OF DATA to work well, and further takes a long time when there is a lot of data.
 
 When the `-v` or `-V` flags are specified, output is verbose. `-v` indicates verbose output while `-V` indicates more verbose output.
 
 The `-c` flag points to the configuration file to use. In the example above, this file is `lang.yaml`. This file contains information about the setting preferences and phone set and is used to save the state of the aligner.
 
-The `-d` flag points to the dictionary containing the words to be aligned. 
+The `-d` flag points to the dictionary containing the words to be aligned.
 
 The `-w` flag indicates that the resulting acoustic model and settings will be written to a file of the name following. In the example, the acoustic model and settings will be written to `lang-mod.zip`.
 
-The `-e` flag is used to specify the number of training iterations per "round": the aligner performs three rounds of training, each of which take approximately the same time, so the effect of increasing this value by one is approximately 3-fold. 
+The `-e` flag is used to specify the number of training iterations per "round": the aligner performs three rounds of training, each of which take approximately the same time, so the effect of increasing this value by one is approximately 3-fold.
 
 Lastly, the `-t` flag indicates the source of the training data. In the example, this is a directory called `lang/`. When `-t` is specified, a few other command-line options become available. The `-s` flag specifies samplerate for the models used, both training and testing data will be resampled to this rate, if they do not match it. For instance, to use 44010 Hz models, you could say:
 
@@ -253,12 +253,12 @@ Resampling this way can take a long time, especially with large sets of data. It
 
 ### Resampling Data Files
 
-To be more efficient, it is recommended that `resample.sh` is used to resample data. To do this, enter the following into your Terminal while in the aligner directory: 
+To be more efficient, it is recommended that `resample.sh` is used to resample data. To do this, enter the following into your Terminal while in the aligner directory:
 
-    $ ./resample.sh -s 16000 -r data/ -w newDirectory/ 
+    $ ./resample.sh -s 16000 -r data/ -w newDirectory/
 
 The `-s` flag specifies the desired sample rate (Hz). 16000 Hz is the default for the aligner, and therefore recommended as a sample rate. Alternatively, a different sample rate can be specified for `resample.sh` and aligner module.
 
-The `-r` flag points to the directory containing the files to be resampled. 
+The `-r` flag points to the directory containing the files to be resampled.
 
-The `-w` flag indicates the name of a directory where the new, resampled files should be written. 
+The `-w` flag indicates the name of a directory where the new, resampled files should be written.
