@@ -2,9 +2,10 @@
 Global variables and helpers for forced alignment
 """
 
+import bisect
+import logging
 import os
 import yaml
-import logging
 
 # global variables
 
@@ -67,7 +68,11 @@ def resolve_opts(args):
         logging.error("Configuration (-c) file not specified.")
         exit(1)
     with open(args.configuration, "r") as source:
-        opts = yaml.load(source)
+        try:
+            opts = yaml.load(source)
+        except yaml.YAMLError as err:
+            logging.error("Error in configuration file: %s", err)
+            exit(1)
     # command line only
     if not args.dictionary:
         logging.error("Dictionary (-d) not specified.")
@@ -83,7 +88,7 @@ def resolve_opts(args):
         logging.error("Samplerate (-s) not specified.")
         exit(1)
     if sr not in SAMPLERATES:
-        i = bisect(SAMPLERATES, sr)
+        i = bisect.bisect(SAMPLERATES, sr)
         if i == 0:
             pass
         elif i == len(SAMPLERATES):
